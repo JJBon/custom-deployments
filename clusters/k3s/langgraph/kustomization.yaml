@@ -4,7 +4,6 @@ namespace: langgraph
 resources:
   - namespace.yaml
   - sources/helmrepository-bitnami.yaml
-  - secrets/langsmith-secret.yaml
   - secrets/postgres-secret.yaml
   - secrets/redis-secret.yaml
   - releases/postgresql.yaml
