@@ -37,6 +37,6 @@ env:
 
 secretRefs:
   # Secrets names created via Flux below (or SOPS).
-  langsmith: langgraph-langsmith
+  langsmith: langgraph-secrets
   postgres: langgraph-postgres
   redis: langgraph-redis
