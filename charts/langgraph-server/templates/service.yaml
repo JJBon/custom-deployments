@@ -3,12 +3,9 @@ kind: Service
 metadata:
   name: {{ include "langgraph-server.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "langgraph-server.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-  annotations:
-{{- toYaml .Values.service.annotations | nindent 4 }}
+    {{- include "langgraph-server.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   selector:
     app.kubernetes.io/name: {{ include "langgraph-server.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}

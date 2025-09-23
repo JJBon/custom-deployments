@@ -3,10 +3,9 @@ kind: Deployment
 metadata:
   name: {{ include "langgraph-server.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "langgraph-server.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "langgraph-server.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount | default 1 }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "langgraph-server.name" . }}
@@ -20,47 +19,24 @@ spec:
       containers:
         - name: server
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.targetPort }}
+            - containerPort: {{ .Values.service.targetPort }}
           env:
             - name: LANGGRAPH_AUTH_TYPE
               value: {{ .Values.env.LANGGRAPH_AUTH_TYPE | quote }}
-            # LangSmith API key
-            - name: LANGSMITH_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.secretRefs.langsmith }}
-                  key: LANGSMITH_API_KEY
-            # If you later get a production license, add it to this secret and uncomment:
-            # - name: LANGGRAPH_LICENSE_KEY
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: {{ .Values.secretRefs.langsmith }}
-            #       key: LANGGRAPH_LICENSE_KEY
-            # DB + Redis URLs
-            - name: DATABASE_URL
+            # pull secrets via refs as you already set in values:
+            - name: POSTGRES_URL
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretRefs.postgres }}
-                  key: DATABASE_URL
+                  key: url
             - name: REDIS_URL
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretRefs.redis }}
-                  key: REDIS_URL
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 20
-            periodSeconds: 20
-          resources:
-{{- toYaml .Values.resources | nindent 12 }}
+                  key: url
+            - name: LANGSMITH_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretRefs.langsmith }}
+                  key: api-key
