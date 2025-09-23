@@ -1,0 +1,37 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: langgraph
+  namespace: langgraph
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # Use the chart from THIS repo via the built-in 'flux-system' source
+      # (Flux bootstrap creates a GitRepository named flux-system)
+      chart: charts/langgraph-server
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+  values:
+    image:
+      repository: ghcr.io/langchain-ai/langgraph-server   # TODO verify
+      tag: latest                                         # pin a tag in prod
+    service:
+      port: 80
+      targetPort: 8080                                    # TODO verify server port
+    ingress:
+      enabled: true
+      className: traefik
+      hosts:
+        - host: langgraph.localtest.me
+          paths:
+            - path: /
+              pathType: Prefix
+    env:
+      LANGGRAPH_AUTH_TYPE: "user-api-key"
+    secretRefs:
+      langsmith: langgraph-langsmith
+      postgres: langgraph-postgres
+      redis: langgraph-redis

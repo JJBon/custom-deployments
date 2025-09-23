@@ -1,0 +1,42 @@
+image:
+  # TODO: set the official image and a specific tag from LangChain docs / registry
+  repository: ghcr.io/langchain-ai/langgraph-server
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080        # TODO: set to the server's actual HTTP port if different
+  annotations: {}
+
+ingress:
+  enabled: true
+  className: ""           # e.g. "traefik" on k3s, or leave empty to use default
+  hosts:
+    - host: langgraph.localtest.me   # change to your domain
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []                 # e.g. [{ hosts: ["langgraph.example.com"], secretName: "langgraph-tls" }]
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+env:
+  # Required for dev self-host auth
+  LANGGRAPH_AUTH_TYPE: "user-api-key"
+
+  # DB/Redis URLs are pulled from a Secret; leave here for visibility
+  # DATABASE_URL: "postgresql://lg:lgpass@postgresql:5432/langgraph?sslmode=disable"
+  # REDIS_URL: "redis://:lgredispw@redis-master:6379/0"
+
+secretRefs:
+  # Secrets names created via Flux below (or SOPS).
+  langsmith: langgraph-langsmith
+  postgres: langgraph-postgres
+  redis: langgraph-redis
