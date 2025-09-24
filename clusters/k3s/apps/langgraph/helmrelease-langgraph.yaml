@@ -7,14 +7,13 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: langgraph-dataplane
-      version: 0.1.1
+      chart: langgraph-dataplane        # check exact chart name in the repo index
+      version: 0.1.1                    # pin a version; do NOT use "*"
       sourceRef:
         kind: HelmRepository
         name: langchain
         namespace: flux-system
-      chart: langgraph-dataplane          # check the chart name in the index
-      version: 0.1.1                      # pin a known-good chart version
+      reconcileStrategy: ChartVersion
   install:
     remediation:
       retries: 3
@@ -25,4 +24,5 @@ spec:
     - kind: ConfigMap
       name: langgraph-values-common
       valuesKey: values.yaml
-  values: {}  # keep empty; use valuesFrom
+  values: {}
+
