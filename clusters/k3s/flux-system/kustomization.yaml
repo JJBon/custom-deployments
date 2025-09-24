@@ -1,15 +1,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps
+  name: langgraph
   namespace: flux-system
 spec:
   interval: 5m
   prune: true
   wait: true
-  path: ./clusters/k3s-prod/apps      # <- points to the apps dir in *this* repo
+  timeout: 10m
+  path: ./clusters/k3s/apps/langgraph
   sourceRef:
     kind: GitRepository
-    name: flux-system                  # created by flux bootstrap
-  dependsOn:
-    - name: flux-system                # optional, ensures controllers exist
+    name: flux-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: langgraph
+      namespace: langgraph
