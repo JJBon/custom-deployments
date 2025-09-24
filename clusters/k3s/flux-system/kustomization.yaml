@@ -17,3 +17,5 @@ spec:
       kind: HelmRelease
       name: langgraph
       namespace: langgraph
+resources:
+  - helmrepository-langchain.yaml

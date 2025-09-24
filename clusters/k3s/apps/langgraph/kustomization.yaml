@@ -1,4 +1,4 @@
-# clusters/k3s-prod/apps/langgraph/kustomization.yaml
+# clusters/k3s/apps/langgraph/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -7,7 +7,6 @@ namespace: langgraph
 
 resources:
   - ns.yaml
-  - helmrepository-langchain.yaml
   - helmrelease-langgraph.yaml
   # If you have an explicit ConfigMap manifest instead of generator, include it here
 
