@@ -1,0 +1,4 @@
+creation_rules:
+  - path_regex: clusters/.*/secrets/.*\.sops\.yaml
+    age: "age1l3cglgm6t5fsyv55lrmufznmt4lecuy7eqf0uxe8vd4qj9gtcpssj0tyx3"
+    encrypted_regex: '^(data|stringData)$'

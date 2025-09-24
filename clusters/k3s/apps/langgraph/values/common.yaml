@@ -1,0 +1,20 @@
+env:
+  LANGGRAPH_AUTH_TYPE: user-api-key
+
+service:
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  className: traefik
+  hosts:
+    - host: langgraph.localtest.me
+      paths:
+        - path: /
+          pathType: Prefix
+
+secretRefs:
+  postgres: langgraph-postgres
+  redis: langgraph-redis
+  langsmith: langgraph-langsmith   # if you actually use LangSmith
