@@ -5,6 +5,14 @@ kind: Kustomization
 # This namespace applies to generated/templated manifests (e.g., the ConfigMap)
 namespace: langgraph
 
+spec:
+  chart:
+    spec:
+      sourceRef:
+        kind: HelmRepository
+        name: langchain
+        namespace: flux-system   # <— must be flux-system
+
 resources:
   - ns.yaml
   - helmrelease-langgraph.yaml
