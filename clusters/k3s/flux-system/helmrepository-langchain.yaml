@@ -1,3 +1,4 @@
+#clusters/k3s/flux-system/helmrepository-langchain.yaml
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:

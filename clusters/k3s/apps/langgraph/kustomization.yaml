@@ -2,21 +2,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# This namespace applies to generated/templated manifests (e.g., the ConfigMap)
 namespace: langgraph
-
-spec:
-  chart:
-    spec:
-      sourceRef:
-        kind: HelmRepository
-        name: langchain
-        namespace: flux-system   # <— must be flux-system
 
 resources:
   - ns.yaml
   - helmrelease-langgraph.yaml
-  # If you have an explicit ConfigMap manifest instead of generator, include it here
 
 configMapGenerator:
   - name: langgraph-values-common
