@@ -1,5 +1,8 @@
 env:
   LANGGRAPH_AUTH_TYPE: user-api-key
+  HOST_WORKER_TENANT_ID: \"$UUID\"
+  HOST_WORKER_RECONCILIATION_CRON_ENABLED: \"false\"
+  HOST_WORKER_EXTERNAL_ENABLED: \"false\"
 
 service:
   port: 80
