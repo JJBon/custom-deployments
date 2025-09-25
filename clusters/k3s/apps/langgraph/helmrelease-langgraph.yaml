@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: langgraph-dataplane        # check exact chart name in the repo index
-      version: 0.1.1                    # pin a version; do NOT use "*"
+      version: 0.2.6                    # pin a version; do NOT use "*"
       sourceRef:
         kind: HelmRepository
         name: langchain
